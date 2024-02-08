@@ -4,12 +4,12 @@
 
 # Site
 title: 夏凌的博客
-subtitle: ''
-description: ''
-keywords:
+subtitle: 在世界上留下自己的痕迹
+description: 
+keywords: 
 author: 夏凌
 language: zh-CN
-timezone: ''
+timezone: 'GMT+8'
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
