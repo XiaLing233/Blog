@@ -1,5 +1,5 @@
 ---
-title: 第一篇文章——MarkDown学习笔记(1)
+title: 第一篇文章——MarkDown学习笔记-1
 date: 2024-02-09
 update: 2024-02-09
 "categories": MarkDown
