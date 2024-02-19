@@ -11,7 +11,7 @@ date: 2024-02-14
 请参见[上一篇文章](https://xialing233.github.io/2024/02/14/Learning-Git-1/)，这里从略。
 
 ## 设置 Git 的用户名
-这里在之前文章的基础上有了拓展，既可以设置全局用户名，也可以为每个仓库设置单独的用户名。命令分别如下：
+这里在之前文章的基础上有了拓展，既可以设置全局用户名，也可以为每个仓库设置单独的用户名。命令分别如下：  
 ```$ git config --global user.name "Mona Lisa"```  
 ```git config  user.name "Mona Lisa"```
 

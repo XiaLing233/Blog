@@ -1,276 +1,353 @@
 ---
 title: C Primer Plus 第四章编程练习笔记
-date: 2024-02-09
+date: 2024-02-19
 "categories": C
 ---
 
-## 前言
-最近假期重拾了C Primer Plus，做了做第四章的编程练习题。因为才是第四章，所以难度不是很大，不过有一些小地方还是值得注意的。因为中文版翻译的水平实在难以恭维，而且英文版确实上手不难，所以就用英文版的题目了。
+## 序
+今天完成了第四章的习题，把自己的解题代码分享在这里。就不像上次那么啰嗦了，这回只展示源代码，需要注意的地方，在注释里已经注明。
 
-## 题目1
->Find out what your system does with integer overflow, floating-point overflow, andfloating-point underflow by using the experimental approach; that is, write programs having these problems. (You can check the discussion in Chapter 4 of limits.h and float.h to get guidance on the largest and smallest values.)
+## C4Q1
+### 题目
+>Write a program that asks for your first name, your last name, and then prints the names
+in the format _last, first_ .
 
-### 思路
-这题比较简单，在于考察底层的知识。可以参考注释，找找自己电脑的 ```limits.h``` 头文件，找到相关的定义。像我这台64位的电脑，```int``` 和 ```long``` 就都占了4个字节。还能获取到具体的数值。
-
-### 源代码
-
+### 代码
 ```C
-// <C3Q1> integer overflow and floating-point overflow / underflow
+// C4Q1.c 姓名的输入输出
 
-# include <stdio.h>
-
-int main(void)
-{
-	// integer overflow
-	int max_int = 2147483647;
-	max_int++;
-	printf("%d\n", max_int);
-	max_int++;
-	printf("%d\n", max_int);
-
-	// floating-point overflow
-	float max_float = 3.402823466e+38F;
-	float min_positive_float = 1.401298464e-45F;
-
-	printf("%f\n", max_float + 1);
-	printf("%f\n", max_float - 1);
-	printf("%f\n", min_positive_float - 1);
-	printf("%f\n", min_positive_float / 2);
-	return 0;
-}
-
-/*
-	在VS2022的输出结果为：
-	------------------------------
-	-2147483648
-	-2147483647
-	340282346638528859811704183484516925440.000000
-	340282346638528859811704183484516925440.000000
-	-1.000000
-	0.000000
-	------------------------------
-*/
-```
-
-## 题目2
->Write a program that asks you to enter an ASCII code value, such as 66, and then prints the character having that ASCII code.
-
-### 思路
-本题涉及到之前讲的，和转义字符有关的知识。注意事项有输入输出的类型等等，注释里写的很详尽。为了让代码更有整体性，注意的地方和疑难在注释中更全面，这是本文的一个约定。
-
-### 源代码
-```C
-// <C3Q2.c> print a character based on given ASCII code
 # define _CRT_SECURE_NO_WARNINGS
-
 # include <stdio.h>
 
 int main(void)
 {
-	int ASCII_ch; // char type will result in runtime debug error, however you can ignore it; an integer type is richer in type
-	scanf("%d", &ASCII_ch); // must be %d, %c will cause receiving only the first number as a character
+	char first[40];
+	char last[40];
 
-	printf("%c\n", ASCII_ch); // must be %c to reach your goal, output binary code as a character type
+	printf("Please input your first name: ");
+	scanf("%s", first); // no need to add '&' prefix
+	printf("Please input your last name: ");
+	scanf("%s", last); // no need to add '&' prefix
 
-	return 0;
-}
-
-```
-
-## 题目3
->Write a program that sounds an alert and then prints the following text:
->```Startled by the sudden sound, Sally shouted,```
->```"By the Great Pumpkin, what was that!"```
-
-
-### 思路
-还是转义字符的知识，如何打印出\a，以及如何打印出有特殊含义的转义字符，如 \、"等。
-
-### 源代码
-```C
-/* <C3Q3.c> using printf */
-
-# include <stdio.h>
-
-int main(void)
-{
-	printf("\aStartled by the sudden sound, Sally shouted,\n");
-	printf("\"By the Great Pumpkin, what was that!\"");
+	printf("%s, %s", last, first);
 
 	return 0;
 }
 
 /*
-	在VS2022的输出结果为：
-	------------------------------
-	Startled by the sudden sound, Sally shouted,
-	"By the Great Pumpkin, what was that!"
-	------------------------------
+    output:
+    -------
+    Please input your first name: Ling
+    Please input your last name: Xia
+    Xia, Ling
 */
 ```
 
-## 题目4
->Write a program that reads in a floating-point number and prints it first in decimal-point notation, then in exponential notation, and then, if your system supports it, p notation.
-Have the output use the following format (the actual number of digits displayed for the exponent depends on the system):
-```Enter a floating-point value: 64.25```
-```fixed-point notation: 64.250000```
-```exponential notation: 6.425000e+01```
-```p notation: 0x1.01p+6```
+## C4Q2
+### 题目
+>Write a program that requests your first name and does the following with it:  
+>&nbsp;&nbsp;&nbsp;&nbsp;a. Prints it enclosed in double quotation marks  
+>&nbsp;&nbsp;&nbsp;&nbsp;b. Prints it in a field 20 characters wide, with the whole field in quotes and the name at the right end of the field  
+>&nbsp;&nbsp;&nbsp;&nbsp;c. Prints it at the left end of a field 20 characters wide, with the whole field enclosed in quotes  
+>&nbsp;&nbsp;&nbsp;&nbsp;d. Prints it in a field three characters wider than the name
 
-### 思路
-浮点数的格式化输出，还挺有用的。之前不太喜欢 ```%e``` 格式的输出，用习惯了还觉得挺顺眼的。
-
-### 源代码
+### 代码
 ```C
-/* <C3Q4.c> handle floats */
+// C4Q2.c 名字的多种输出格式
+
 # define _CRT_SECURE_NO_WARNINGS
 
 # include <stdio.h>
-
+# include <string.h>
 int main(void)
 {
-	float f_val;
+	char first[40];
 
-	printf("Enter a floating-point value: ");
-	scanf("%f", &f_val);
-	printf("fixed-point notation: %f\n", f_val);
-	printf("exponential notation: %e\n", f_val);
-	printf("p notation: %a\n", f_val); // Note the specifier for p notation is %a
-	
-	return 0;
-}
-```
+	printf("Please input your first name: ");
+	scanf("%s", first);
 
-## 题目5
->There are approximately 3.156 × 10<sup>7</sup> seconds in a year. Write a program that requests your age in years and then displays the equivalent number of seconds.
-
-### 思路
-下边几道题都是单位换算，比较简单。
-
-### 源代码
-
-```C
-// <C3Q5.c> year to seconds
-
-# define _CRT_SECURE_NO_WARNINGS
-
-
-# include <stdio.h>
-
-int main (void)
-{
-	int year_age;
-	int sec_age; // Though the number is in a e notation, it's a integer actually, so int type will be fine
-
-	printf("Please enter your age: ");
-	scanf("%d", &year_age);
-
-	sec_age = 3.156e+7 * year_age; 
-	printf("That's equivalent to %d seconds!\n", sec_age);
-	return 0;
-}
-```
-
-## 题目6
-
->The mass of a single molecule of water is about 3.0×10<sup>-23</sup> grams. A quart of water is about 950 grams.Write a program that requests an amount of water, in quarts, and displays the number of water molecules in that amount.
-
-### 源代码
-
-```C
-/* <C3Q6.c> quarts to molecules */
-
-# define _CRT_SECURE_NO_WARNINGS
-
-# include <stdio.h>
-
-int main(void)
-{
-	double water_quarts, molecule_num;
-	
-	printf("Please enter an amount of water in quart(s): ");
-
-	// to receive a double value in C, you MUST use "%lf"! 
-	// In printf(), both "%lf" and "%f" will work, 
-	// because float arguments in prinf() will be automatically transferred into double type.
-	scanf("%lf", &water_quarts); 
-
-	//printf("water quarts: %f\n", water_quarts);
-
-	molecule_num = water_quarts * 950 / 3.0e-23;
-
-	printf("There are about %.2e molecules.\n", molecule_num); // %d will result in trash values, and e notation is more clear
-
-	return 0;
-}
-```
-
-## 题目7
->There are 2.54 centimeters to the inch. Write a program that asks you to enter your height in inches and then displays your height in centimeters. Or, if you prefer, ask for the height in centimeters and convert that to inches.
-
-### 源代码
-
-```C
-/* <C3Q7.c> centimeter to inch */
-
-# define _CRT_SECURE_NO_WARNINGS
-
-# include <stdio.h>
-
-int main(void)
-{
-	double cm_height, inch_height;
-
-	printf("Enter your height in centimeters: ");
-	scanf("%lf", &cm_height);
-	
-	inch_height = cm_height / 2.54;
-
-	printf("So you are %.2f in inch!\n", inch_height);
-
-	return 0;
-}
-```
-
-## 题目8
-
->In the U.S. system of volume measurements, a pint is 2 cups, a cup is 8 ounces, an ounce is 2 tablespoons, and a tablespoon is 3 teaspoons. Write a program that requests a volume in cups and that displays the equivalent volumes in pints, ounces, tablespoons, and teaspoons. Why does a floating-point type make more sense for this application than an integer type?
-
-### 源代码
-```C
-/* <C3Q8.c> volume measurements */
-
-# define _CRT_SECURE_NO_WARNINGS
-
-# include <stdio.h>
-
-int main(void)
-{
-	float vol;
-
-	printf("Enter a volumn in cups: ");
-	scanf("%f", &vol);
-
-	printf("== %.2f pint(s)\n", vol / 2);
-	printf("== %.2f ounce(s)\n", vol * 8);
-	printf("== %.2f tablespoon(s)\n", vol * 8 * 2);
-	printf("== %.2f teaspoon(s)\n", vol * 8 * 2 * 3);
+	printf("\"%s\"\n", first); // in double quotation marks
+	printf("\"%20s\"\n", first);
+	printf("\"%-20s\"\n", first);
+	printf("%*s\n", strlen(first)+3, first); // 3 characters wider than the name
 
 	return 0;
 }
 
 /*
-	在VS2022的输出结果为：
-	------------------------------
-	Enter a volumn in cups: 2.3
-	== 1.15 pint(s)
-	== 18.40 ounce(s)
-	== 36.80 tablespoon(s)
-	== 110.40 teaspoon(s)
-	------------------------------
+    output:
+    -------
+    Please input your first name: Ling
+    "Ling"
+    "                Ling"
+    "Ling                "
+        Ling
 */
 ```
 
-## 小结
-本章的题目大多和数据类型的转换有关。在把代码整合为文章的过程中，又习得了 MarkDown 的另一个语法，用左右各三个`符号可以框住代码块。当然还有上标 ```<sup></sup> ``` 以及下标 ```<sub></sub>```。还能学到HTML，一举两得。
+## C4Q3
+### 题目
+>Write a program that reads in a floating-point number and prints it first in decimal-point notation and then in exponential notation. Have the output use the following formats (the number of digits shown in the exponent may be different for your system):\
+>a. The input is ```21.3``` or ```2.1e+001``` .\
+>b. The input is ```+21.290``` or ```2.129E+001``` .
+
+### 代码
+```C
+// C4Q3.c 浮点数的输出
+
+# define _CRT_SECURE_NO_WARNINGS
+
+# include <stdio.h>
+
+int main(void)
+{
+	double num;
+
+	printf("Input a floating-point number: "); //21.290
+	scanf("%lf", &num); // remember '&' mark!
+
+	printf("The input is %.1f or %.1le.\n", num, num);
+	printf("The input is %+.3f or %.3E.\n", num, num);
+
+	return 0;
+}
+
+/*
+    output:
+    --------
+    Input a floating-point number: 21.290
+    The input is 21.3 or 2.1e+01.
+    The input is +21.290 or 2.129E+01.
+*/
+```
+## C4Q4
+### 题目
+>Write a program that requests your height in inches and your name, and then displays the information in the following form:
+```Dabney, you are 6.208 feet tall```
+>Use type ```float``` , and use / for division. If you prefer, request the height in centimeters and display it in meters.
+
+### 代码
+```C
+// C4Q4.c 输出名字和身高
+
+# define _CRT_SECURE_NO_WARNINGS
+
+# include <stdio.h>
+
+int main(void)
+{
+	char name[40];
+	double height;
+
+	printf("Please enter your name: ");
+	scanf("%s", name);
+	printf("Please enter your height in inches: ");
+	scanf("%lf", &height); // remember '&' mark!
+
+	printf("%s, you are %.3f feet tall\n", name, height);
+
+	return 0;
+}
+
+/*
+    output:
+    --------
+    Please enter your name: Dabney
+    Please enter your height in inches: 6.208
+    Dabney, you are 6.208 feet tall
+*/
+```
+
+## C4Q5
+### 题目
+>Write a program that requests the download speed in megabits per second (Mbs) and the size of a file in megabytes (MB). The program should calculate the download time for the file. Note that in this context one byte is eight bits. Use type ```float``` , and use / for division. The program should report all three values (download speed, file size, and download time) showing two digits to the right of the decimal point, as in the following:
+```At 18.12 megabits per second, a file of 2.20 megabytes```
+```downloads in 0.97 seconds.```
+
+### 代码
+```C
+// C4Q5.c 下载
+
+# define _CRT_SECURE_NO_WARNINGS
+
+# include <stdio.h>
+
+int main(void)
+{
+	float speed, size, time;
+
+	printf("Please give me current download speed(Mbs) and the size of a file(MB) in order: ");
+	scanf("%f %f", &speed, &size); // '&' mark!
+
+	time = (size * 8) / speed;
+	
+	printf("At %.2f megabits per second, a file of %.2f megabytes\ndownloads in %.2f seconds.", speed, size, time);
+	return 0;
+}
+
+/*
+    output:
+    ---------
+    Please give me current download speed(Mbs) and the size of a file(MB) in order: 18.12 2.20
+    At 18.12 megabits per second, a file of 2.20 megabytes
+    downloads in 0.97 seconds.
+*/
+```
+
+## C4Q6
+### 题目
+>Write a program that requests the user’s first name and then the user’s last name. Have it print the entered names on one line and the number of letters in each name on the following line. Align each letter count with the end of the corresponding name, as in the following:
+```C
+Melissa Honeybee
+      7        8
+```
+>Next, have it print the same information, but with the counts aligned with the beginning of each name.
+```C
+Melissa Honeybee
+7       8
+```
+
+### 代码
+```C
+// C4Q6.c 姓名与字符数的输出
+
+# define _CRT_SECURE_NO_WARNINGS
+
+# include <stdio.h>
+# include <string.h>
+
+int main(void)
+{
+	char first[40], last[40];
+
+	printf("Please enter your first name: ");
+	scanf("%s", first);
+	printf("Please enter your last name: ");
+	scanf("%s", last);
+
+	printf("%s %s\n", first, last);
+	printf("%*d %*d\n", strlen(first), strlen(first), strlen(last), strlen(last));
+
+	printf("%s %s\n", first, last);
+	printf("%-*d %-*d\n", strlen(first), strlen(first), strlen(last), strlen(last));
+
+	return 0;
+}
+
+/*
+    output:
+    --------
+    Please enter your first name: Melissa
+    Please enter your last name: Honeybee
+    Melissa Honeybee
+        7        8
+    Melissa Honeybee
+    7       8
+*/
+```
+
+## C4Q7
+### 题目
+>Write a program that sets a type ```double``` variable to 1.0/3.0 and a type ```float``` variable to 1.0/3.0. Display each result three times—once showing four digits to the right of the decimal, once showing 12 digits to the right of the decimal, and once showing 16 digits to the right of the decimal. Also have the program include ```float.h``` and display the values of ```FLT_DIG``` and ```DBL_DIG``` . Are the displayed values of 1.0/3.0 consistent with these values?
+
+### 代码
+```C
+// C4Q7.c float 和 double 类型对数值的存储精度
+
+# define _CRT_SECURE_NO_WARNINGS
+
+# include <stdio.h>
+# include <float.h>
+
+int main(void)
+{
+	//float f_num = 1.0 / 3.0; // error
+	//double d_num 1.0 / 3.0; // error
+
+	float f_num;
+	double d_num;
+
+	f_num = 1.0 / 3.0;
+	d_num = 1.0 / 3.0;
+
+	printf("%25.4f %25.4f\n", f_num, d_num);
+	printf("%25.12f %25.12f\n", f_num, d_num);
+	printf("%25.16f %25.16f\n", f_num, d_num);
+	printf("Further:\n%25.20f %25.20f\n", f_num, d_num);
+
+	printf("FLT_DIG:%d\nDBL_DIG:%d\n", FLT_DIG, DBL_DIG); // FLT_DIG: Minimum number of significant decimal digits for a float
+	                                                      // 一个浮点数的最小有效数字位数
+	return 0;
+}
+
+/*
+	output:
+	----------
+                   0.3333                    0.3333
+           0.333333343267            0.333333333333
+       0.3333333432674408        0.3333333333333333
+Further:
+   0.33333334326744079590    0.33333333333333331483
+FLT_DIG:6
+DBL_DIG:15
+*/
+```
+
+## C4Q8
+### 题目
+>Write a program that asks the user to enter the number of miles traveled and the number of gallons of gasoline consumed. It should then calculate and display the miles-per-gallon value, showing one place to the right of the decimal. Next, using the fact that one gallon is about 3.785 liters and one mile is about 1.609 kilometers, it should convert the miles-per-gallon value to a liters-per-100-km value, the usual European way of expressing fuel consumption, and display the result, showing one place to the right of the decimal. Note that the U. S. scheme measures the distance traveled per amount of fuel (higher is better), whereas the European scheme measures the amount of fuel per distance (lower is better). \
+>Use symbolic constants (using ```const``` or ```#define``` ) for the two conversion factors.
+
+### 代码
+```C
+// C4Q8.c 燃油效率
+
+# define _CRT_SECURE_NO_WARNINGS
+
+# include <stdio.h>
+
+# define GALLONTOLITER 3.785 // no ';'
+# define MILETO100KM 1.609 / 100 // no ';' & '/' not '*'!
+
+int main(void)
+{
+	double m_distance, g_fuel, km_distance, l_fuel;
+	double mpg, lp100km; // miles-per-gallon, liters-per-100km
+	printf("Please enter miles travelled and gallons of gasoline consumed: ");
+	scanf("%lf %lf", &m_distance, &g_fuel);
+
+	km_distance = m_distance * MILETO100KM; // distance in kilometers
+	l_fuel = g_fuel * GALLONTOLITER; // fuel in liters
+
+	mpg = m_distance / g_fuel;
+	lp100km = l_fuel / km_distance;
+
+	printf("Miles-per-gallon: %.1f\n", mpg);
+	printf("Liters-per-100km: %.1f\n", lp100km);
+
+	return 0;
+}
+
+/*
+    output:
+    -----------
+    Please enter miles travelled and gallons of gasoline consumed: 10 10
+    Miles-per-gallon: 1.0
+    Liters-per-100km: 235.2
+    -----------
+    Please enter miles travelled and gallons of gasoline consumed: 10 5
+    Miles-per-gallon: 2.0
+    Liters-per-100km: 117.6
+*/
+```
+
+## 跋
+本节题目不难，关键是掌握 ```printf()``` 和 ```scanf()``` 的修饰符，以合乎期望地显示输出内容。
+
+其中，第六题用到了 ```%*d``` 修饰符，可以动态地调整 field 的宽度，很有应用价值；\
+第七题对 ```float``` 和 ```double``` 类型的变量进行了不同小数位数的输出，结合 ```floats.h``` 头文件，可以对浮点型数据的存储有更深的理解；\
+第八题使用了 ```#define``` 定义 _symbolic constant_ ，同时要求对数据进行有效处理，具有应用价值。
+
+对于这些题目，有共同点需要注意：
+* 对于以数组类型存储的字符串，在 ```scanf()``` 中不需要在变量名前加 '&'；
+* 对于其他类型的变量，则需要加 '&'。
