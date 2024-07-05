@@ -2,6 +2,7 @@
 title: C Primer Plus 第四章编程练习笔记
 date: 2024-02-19
 "categories": C
+permalink: 2024/02/CPP-C4-PE/
 ---
 
 ## 序

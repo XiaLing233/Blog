@@ -3,6 +3,7 @@ title: Git学习-1
 date: 2024-02-14
 update: 2024-02-14
 "categories": Git
+permalink: 2024/02/Learning-Git-1/
 ---
 ## 序
 Git是一个使用普遍的版本控制工具，这是我[根据Git在线文档](https://www.git-scm.com/docs)的学习笔记。有关 Github 的内容，请期待后续文章。
