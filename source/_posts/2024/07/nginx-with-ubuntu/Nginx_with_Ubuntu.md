@@ -2,7 +2,7 @@
 title: Nginx与Ubuntu
 date: 2024-07-24
 "categories": Nginx
-permalink: 2024/07/Nginx_with_Ubuntu/
+permalink: 2024/07/nginx-with-ubuntu/
 ---
 
 

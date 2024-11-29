@@ -3,7 +3,7 @@ title: 第一篇文章——Markdown学习笔记-1
 date: 2024-02-09
 update: 2024-02-19
 "categories": Markdown
-permalink: 2024/02/Markdown-1/
+permalink: 2024/02/learning-markdown-1/
 ---
 
 ## 前言

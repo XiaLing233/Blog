@@ -2,7 +2,7 @@
 title: 汇编语言学习总结
 date: 2024-08-05
 "categories": Assembly
-permalink: 2024/07/Assembly_Sum_Up/
+permalink: 2024/08/assembly_sum_up/
 ---
 本文章是学习王爽老师的《汇编语言 第三版》积累的笔记，**不可以代替原书，只是起到总结的作用**。如果要入门汇编，还是要看王爽老师的教材，阅读完毕后，可以阅读本文章，查漏补缺。
 

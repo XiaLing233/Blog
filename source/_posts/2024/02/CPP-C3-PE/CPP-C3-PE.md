@@ -3,7 +3,7 @@ title: C Primer Plus 第三章编程练习笔记
 date: 2024-02-09
 update: 2024-02-19
 "categories": C
-permalink: 2024/02/CPP-C3-PE/
+permalink: 2024/02/cpp-c3-pe/
 ---
 
 ## 前言

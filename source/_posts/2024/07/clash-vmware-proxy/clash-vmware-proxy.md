@@ -3,7 +3,7 @@ title: 虚拟机|如何让VMware虚拟机使用Clash代理访问外网
 date: 2024-07-23
 update: 2024-08-05
 "categories": 虚拟机
-permalink: 2024/07/Clash_VMware_Proxy/
+permalink: 2024/07/clash_vmware_proxy/
 ---
 
 软件：VMware Workstation Pro 17

@@ -2,7 +2,7 @@
 title: Missing Semester 学习笔记(1)
 date: 2024-02-28
 "categories": Missing Semester
-permalink: 2024/02/Missing-1/
+permalink: 2024/02/missing-1/
 ---
 
 # 序
