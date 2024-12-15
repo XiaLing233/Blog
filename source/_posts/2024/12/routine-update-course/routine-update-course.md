@@ -1,7 +1,7 @@
 ---
 title: 更新网站上课表的步骤
 date: 2024-12-15
-permalink: 2024/12/routine-update-course.md
+permalink: 2024/12/routine-update-course/
 categories: 个人工作
 ---
 
