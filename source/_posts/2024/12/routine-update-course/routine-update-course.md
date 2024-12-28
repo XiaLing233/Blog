@@ -1,6 +1,7 @@
 ---
 title: 更新网站上课表的步骤
 date: 2024-12-15
+update: 2024-12-28
 permalink: 2024/12/routine-update-course/
 categories: 个人工作
 ---
@@ -38,6 +39,7 @@ categories: 个人工作
 #### 进行数据处理
 
 ```python
+# 更新：删除开课学院后面烦人的 \r
 import os
 import pandas as pd
 import time
@@ -64,7 +66,7 @@ for file in csv_files:
 
     # 读取 CSV 文件
     ori_path = './ori_csv/'
-    df = pd.read_csv(ori_path + file, skiprows=2) # 忽略前两行，一行是标题（某某学期工作安排表），另一行是 ,,,,,,,,,
+    df = pd.read_csv(ori_path + file, skiprows=2)
 
     # print(df)
 
@@ -88,11 +90,11 @@ for file in csv_files:
             continue
 
         # 如果第1列是 NaN 且第0列是字符串，则更新当前的学院名称
-        if pd.isna(row[1]) and isinstance(row[0], str):
-            current_department = row[0].strip()
+        if pd.isna(row.iloc[1]) and isinstance(row.iloc[0], str):
+            current_department = row.iloc[0].strip()
             skip_next = True  # 设置标志跳过下一行
             
-        elif pd.isna(row[0]) and pd.isna(row[1]):
+        elif pd.isna(row.iloc[0]) and pd.isna(row.iloc[1]):
             current_department = ''
             skip_next = True  # 设置标志跳过下一行
             
@@ -110,13 +112,21 @@ for file in csv_files:
     df.insert(0, '学期', semester)
     # print(df)
 
-    df = df.applymap(lambda x: x.rstrip() if isinstance(x, str) else x) # 去除空白符
+    df = df.map(lambda x: x.rstrip() if isinstance(x, str) else x) # 去除空白符
     
+    # 如果每项的末尾有 \r, 则去掉
+    df = df.map(lambda x: x[:-1] if isinstance(x, str) and x.endswith('\r') else x)
+
     # 重置索引
     df = df.reset_index(drop=True)
 
     # 将修改后的 DataFrame 添加到列表
     processed_dfs.append(df)
+
+    # 如果 processed_dfs 里面的项也含有 \r, 则去掉
+    for i, df in enumerate(processed_dfs):
+        df = df.map(lambda x: x[:-1] if isinstance(x, str) and x.endswith('\r') else x)
+        processed_dfs[i] = df
 
     # 保存修改后的文件为 "xxx_edited.csv"
     new_filename = file.replace('.csv', '_edited.csv')
@@ -150,6 +160,8 @@ else:
 
 所以注意，在进行新学期的添加前，记得备份！记得备份，记得备份！否则就被覆盖了。
 
+这里的备份指的是把原来的 `*merged_csv` 复制一份，而不是剪切，不然又乱了。
+
 #### 导入到数据库
 
 其实你说，真的有必要生成一份 `*merged.csv` 文件吗？没必要。只需要把新学期的课程 `LOAD` 到课表里就行了。不过为了保险，还是存一份原始 `.csv` 文件吧，方便迁移？或许。
@@ -174,6 +186,12 @@ IGNORE 1 LINES;                       -- 忽略第一行（表头）
 ![3-2](https://static.xialing.icu/img/202412151011453.webp)
 
 这样就得到了 `.sql` 文件。
+
+#### 本地测试
+
+打开 `vue` 服务的方法是 `npm run dev`。
+
+打开 `flask` 后端的方法是 `flask run --port=8000`，因为我用的是 `8000` 端口。
 
 ### 在服务器上
 
