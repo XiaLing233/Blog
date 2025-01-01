@@ -1,6 +1,7 @@
 ---
 title: 定期总结(2024-12)|Letting Go
 date: 2024-12-27
+updated: 2024-12-27
 permalink: 2024/12/regular-sum-up-2412/
 categories: 个人总结
 ---

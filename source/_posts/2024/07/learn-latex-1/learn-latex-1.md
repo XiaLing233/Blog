@@ -1,7 +1,7 @@
 ---
 title: Latex教程学习笔记
 date: 2024-07-09
-update: 2024-07-09
+updated: 2024-07-09
 "categories": Latex
 permalink: 2024/07/learn-latex-1/
 ---

@@ -1,6 +1,7 @@
 ---
 title: Clash 订阅转换无法获取结点
 date: 2024-10-08
+updated: 2024-10-08
 permalink: 2024/10/clash-sub-link/
 ---
 

@@ -1,9 +1,9 @@
 ---
 title: 建站相关|用于Github Pages的域名被其他用户使用
 date: 2024-07-22
-updata: 2024-08-05
+updated: 2024-08-05
 "categories": 建站
-permalink: 2024/07/site_domain_takeover/
+permalink: 2024/07/site-domain-takeover/
 ---
 
 ## 问题

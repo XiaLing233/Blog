@@ -1,6 +1,7 @@
 ---
 title: Nginx与Ubuntu
 date: 2024-07-24
+updated: 2024-07-24
 "categories": Nginx
 permalink: 2024/07/nginx-with-ubuntu/
 ---

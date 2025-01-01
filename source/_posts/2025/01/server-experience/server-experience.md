@@ -1,7 +1,7 @@
 ---
 title: 服务器常见问题
 date: 2025-01-01
-update: 2025-01-01
+updated: 2025-01-01
 permalink: 2025/01/server-experience/
 categories: 服务器
 ---
