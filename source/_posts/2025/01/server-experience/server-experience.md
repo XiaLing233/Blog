@@ -1,7 +1,7 @@
 ---
 title: 服务器常见问题
 date: 2025-01-01
-updated: 2025-01-01
+updated: 2025-01-14
 permalink: 2025/01/server-experience/
 categories: 服务器
 ---
@@ -42,5 +42,22 @@ thread_stack            = 128K
 这里之所以采用停止再启动的说法，是因为重启不会改变机器的 `IP`，而停止后会的。所以说，要么申请一个弹性 `IP`，就始终是你了。要么就每次停止再启动后，手动修改 `DNS` 解析。还是前者方便一些吧。
 
 注意，停止再启动后，服务器的 `IP` 会变，所以可能引发的现象是：原来的域名提示连接超时；通过 `XSHELL` 等第三方 `ssh` 连接不上服务器，`Connection Failed...`。本质就是服务器的 `IP` 变了。
+
+## 新建用户
+
+用 Github 白嫖的 DigitalOcean 服务器默认是 root 用户，太可怕了。因此新建一个用户，并进行 ssh 的配置。且看：
+
+```bash
+sudo adduser xialing # 新建一个叫 xialing 的用户
+sudo usermod -aG sudo xialing # 把用户加到 sudo 组
+```
+
+这样的话，每次使用 sudo 还需要输入密码，不好，因为已经可以通过 ssh 登录了（见下），所以不想输入密码。
+
+使用 `sudo visudo` 修改 `visudo`，其实用 `vim` 修改 `/etc/visudo` 也可以。在文件的 **最后一行** 添加 `xialing ALL=(ALL) NOPASSWD: ALL`。
+
+通过 ssh 登录，使用 `XShell` 工具选项卡的密钥对生成工具，把公钥复制到 `~` 下的 `.ssh` 下的 `authorized_keys` 文件中，如果没有的话，新建这个文件夹。
+
+完毕。
 
 ## 未完待续...
